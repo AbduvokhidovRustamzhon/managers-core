@@ -1,4 +1,4 @@
-module github.com/coursar/managers-core
+module github.com/AbduvokhidovRustamzhon/managers-core
 
 go 1.13
 
