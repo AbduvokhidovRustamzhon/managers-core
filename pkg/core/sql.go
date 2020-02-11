@@ -58,7 +58,7 @@ const getProductPriceAndQtyByIdSQL = `SELECT price, qty FROM products WHERE id =
 const insertSaleSQL = `INSERT INTO sales(manager_id, product_id, price, qty) VALUES (:manager_id, :product_id, :price, :qty);`
 
 const loginManagersSQL  = `SELECT login, password FROM managers WHERE login = ?;`
-const lstAtmsSQL = `SELECT name, address FROM atm;`
+const listAtmsSQL = `SELECT name, address FROM atm;`
 const listServicesSQL  = `SELECT id, name, price FROM service;`
 const listCards = ` SELECT id, name, balance, user_id FROM card;`
 const lisUsers = `SELECT id, name, surname, middle_name, sex, email, login, password, phone, address, ban FROM client;`
