@@ -30,12 +30,43 @@ type Product struct {
 	Qty   int64
 }
 
+type ATM struct {
+	Id int64
+	Name string
+	AddressU string
+}
+
+type Service struct {
+	Id int64
+	Name string
+	Price int64
+}
+
+type Card struct {
+	Id int64
+	Name string
+	Balance int64
+	UserId int64
+}
+
+type User struct {
+	Id int64
+	Name string
+	Surname string
+	MiddleName string
+	Login string
+	Email string
+	Password string
+	Phone int64
+	Ban bool
+}
+
 func (receiver *QueryError) Unwrap() error {
 	return receiver.Err
 }
 
 func (receiver *QueryError) Error() string {
-	return fmt.Sprintf("can't execute query %s: %s", loginSQL, receiver.Err.Error())
+	return fmt.Sprintf("can't execute query %s: %s", loginUserSQL, receiver.Err.Error())
 }
 
 func queryError(query string, err error) *QueryError {
@@ -54,9 +85,9 @@ func dbError(err error) *DbError {
 	return &DbError{Err: err}
 }
 
-
+// TODO: INIT
 func Init(db *sql.DB) (err error) {
-	ddls := []string{managersDDL, productsDDL, salesDDL}
+	ddls := []string{managersDDL, productsDDL, salesDDL, clients, atm, managers, services, cards}
 	for _, ddl := range ddls {
 		_, err = db.Exec(ddl)
 		if err != nil {
@@ -74,12 +105,14 @@ func Init(db *sql.DB) (err error) {
 
 	return nil
 }
+// TODO: INIT
+
 
 func Login(login, password string, db *sql.DB) (bool, error) {
 	var dbLogin, dbPassword string
 
 	err := db.QueryRow(
-		loginSQL,
+		loginUserSQL,
 		login).Scan(&dbLogin, &dbPassword)
 
 	if err != nil {
@@ -87,7 +120,7 @@ func Login(login, password string, db *sql.DB) (bool, error) {
 			return false, nil
 		}
 
-		return false, queryError(loginSQL, err)
+		return false, queryError(loginUserSQL, err)
 	}
 
 	if dbPassword != password {

@@ -52,18 +52,68 @@ VALUES (1, 'Big Mac', 200, 10),       -- 1
 
 
 
-const loginSQL = `SELECT login, password FROM managers WHERE login = ?`
+const loginUserSQL = `SELECT login, password FROM managers WHERE login = ?;`
 const getAllProductsSQL = `SELECT id, name, price, qty FROM products;`
 const getProductPriceAndQtyByIdSQL = `SELECT price, qty FROM products WHERE id = ?;`
 const insertSaleSQL = `INSERT INTO sales(manager_id, product_id, price, qty) VALUES (:manager_id, :product_id, :price, :qty);`
 
-const clients = `CREATE TABLE IF NOT EXISTS clients(
-id INTEGER PRIMARY KEY AUTOINCREMENT,
-name TEXT NOT NULL,
-surname TEXT NOT NULL,
-login TEXT NOT NULL UNIQUE,
-password TEXT NOT NULL,
-phone TEXT NOT NULL,
-ban BOOLEAN NOT NULL
+const loginManagersSQL  = `SELECT login, password FROM managers WHERE login = ?;`
+const lstAtmsSQL = `SELECT name, address FROM atm;`
+const listServicesSQL  = `SELECT id, name, price FROM service;`
+const listCards = ` SELECT id, name, balance, user_id FROM card;`
+const lisUsers = `SELECT id, name, surname, middle_name, sex, email, login, password, phone, address, ban FROM client;`
+
+
+
+const clients = `CREATE TABLE IF NOT EXISTS client(
+	id INTEGER PRIMARY KEY AUTOINCREMENT,
+	name TEXT NOT NULL,
+	surname TEXT NOT NULL,
+	middle_name TEXT NOT NULL,
+	sex TEXT NOT NULL,
+	email TEXT NOT NULL UNIQUE,
+	login TEXT NOT NULL UNIQUE,
+	password TEXT NOT NULL,
+	secretWord TEXT NOT NULL,
+	phone TEXT NOT NULL,
+	address TEXT NOT NULL,
+	ban BOOLEAN NOT NULL,
 );`
 
+const managers = `CREATE TABLE IF NOT EXISTS manager(
+	id INTEGER PRIMARY KEY AUTOINCREMENT,
+	name TEXT NOT NULL,
+	surname TEXT NOT NULL,
+	middle_name TEXT NOT NULL,
+	sex TEXT NOT NULL,
+	email TEXT NOT NULL UNIQUE,
+	login TEXT NOT NULL UNIQUE,
+	password TEXT NOT NULL,
+	phone TEXT NOT NULL,
+	address TEXT NOT NULL
+);`
+
+const atm  = `CREATE TABLE IF NOT EXISTS atm(
+	id INTEGER PRIMARY KEY AUTOINCREMENT,
+	name TEXT NOT NULL,
+	address TEXT NOT NULL
+);`
+
+const services  = `CREATE TABLE IF NOT EXISTS service(
+	id INTEGER PRIMARY KEY AUTOINCREMENT,
+	name TEXT NOT NULL,
+	price INTEGER NOT NULL CHECK(price > 0)
+);`
+
+
+const cards = `CREATE TABLE IF NOT EXISTS card(
+	id INTEGER PRIMARY KEY AUTOINCREMENT,
+	name TEXT NOT NULL,
+	balance INTEGER NOT NULL,
+	user_id INTEGER NOT NULL REFERENCES users
+);`
+
+const insertAtmSQL = `INSERT INTO atm( name, address)VALUES( :name,:address);`
+const insertServiceSQL = `INSERT INTO service( name, balance)VALUES( :name, :balance);`
+const insertCardsSQL = `INSERT INTO card(name, balance, user_id)VALUES( :name, :balance);`
+const insertUserSQL = `INSERT INTO client(name, surname, middle_name, sex, email, login, password, secretWord, phone, address `
