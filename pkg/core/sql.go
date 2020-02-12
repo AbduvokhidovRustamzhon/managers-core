@@ -75,7 +75,7 @@ const clients = `CREATE TABLE IF NOT EXISTS client(
 	login TEXT NOT NULL UNIQUE,
 	password TEXT NOT NULL,
 	passportSeries TEXT NOT NULL UNIQUE,
-	phone TEXT NOT NULL UNIQUE,
+	phone TEXT NOT NULL UNIQUE
 	-- address TEXT NOT NULL,
 	-- ban BOOLEAN NOT NULL,
 );`
