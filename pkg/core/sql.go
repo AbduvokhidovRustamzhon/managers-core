@@ -74,7 +74,7 @@ const clients = `CREATE TABLE IF NOT EXISTS client(
 	-- email TEXT NOT NULL UNIQUE,
 	login TEXT NOT NULL UNIQUE,
 	password TEXT NOT NULL,
-	passportSeries TEXT NOT NULL UNIQUE,
+	passport_series TEXT NOT NULL UNIQUE,
 	phone TEXT NOT NULL UNIQUE
 	-- address TEXT NOT NULL,
 	-- ban BOOLEAN NOT NULL,
@@ -85,7 +85,7 @@ const managers = `CREATE TABLE IF NOT EXISTS manager(
 	name TEXT NOT NULL,
 	login TEXT NOT NULL UNIQUE,
 	password TEXT NOT NULL,
-	passport_series TEXT NOT NULL UNIQUE
+	passport_series TEXT NOT NULL UNIQUE,
 	phone TEXT NOT NULL
 );`
 
@@ -105,7 +105,7 @@ const services  = `CREATE TABLE IF NOT EXISTS service(
 const cards = `CREATE TABLE IF NOT EXISTS card(
 	id INTEGER PRIMARY KEY AUTOINCREMENT,
 	name TEXT NOT NULL,
-	number INTEGER NOT NULL CHECK(number > 
+	number INTEGER NOT NULL, 
 	balance INTEGER NOT NULL,
 	user_login TEXT NOT NULL REFERENCES client
 );`
