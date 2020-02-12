@@ -2,10 +2,10 @@ package core
 
 import (
 	"database/sql"
-	"encoding/json"
+
 	"errors"
 	"fmt"
-	"log"
+
 )
 
 // ошибки - это тоже часть API
@@ -88,25 +88,25 @@ func dbError(err error) *DbError {
 }
 
 // TODO: INIT
-//func Init(db *sql.DB) (err error) {
-//	ddls := []string{managersDDL, productsDDL, salesDDL, clients, atm, managers, services, cards}
-//	for _, ddl := range ddls {
-//		_, err = db.Exec(ddl)
-//		if err != nil {
-//			return err
-//		}
-//	}
-//
-//	initialData := []string{managersInitialData, productsInitialData}
-//	for _, datum := range initialData {
-//		_, err = db.Exec(datum)
-//		if err != nil {
-//			return err
-//		}
-//	}
-//
-//	return nil
-//}
+func Init(db *sql.DB) (err error) {
+	ddls := []string{managersDDL, productsDDL, salesDDL, clients, atm, managers, services, cards}
+	for _, ddl := range ddls {
+		_, err = db.Exec(ddl)
+		if err != nil {
+			return err
+		}
+	}
+
+	initialData := []string{managersInitialData, productsInitialData}
+	for _, datum := range initialData {
+		_, err = db.Exec(datum)
+		if err != nil {
+			return err
+		}
+	}
+
+	return nil
+}
 // TODO: INIT
 
 
@@ -211,26 +211,26 @@ func Sale(productId int64, productQty int64, db *sql.DB) (err error) {
 
 
 //////////////////////////////////////
-
-func Init(db *sql.DB) (err error) {
-	ddls := []string{managers, clients, atm, services, cards}
-	for _, ddl := range ddls {
-		_, err = db.Exec(ddl)
-		if err != nil {
-			return err
-		}
-	}
-
-	initialData := []string{managersInitialData}
-	for _, datum := range initialData {
-		_, err = db.Exec(datum)
-		if err != nil {
-			return err
-		}
-	}
-
-	return nil
-}
+//
+//func Init(db *sql.DB) (err error) {
+//	ddls := []string{managers, clients, atm, services, cards}
+//	for _, ddl := range ddls {
+//		_, err = db.Exec(ddl)
+//		if err != nil {
+//			return err
+//		}
+//	}
+//
+//	initialData := []string{managersInitialData}
+//	for _, datum := range initialData {
+//		_, err = db.Exec(datum)
+//		if err != nil {
+//			return err
+//		}
+//	}
+//
+//	return nil
+//}
 
 
 
@@ -494,31 +494,31 @@ func GetAllUsers(db *sql.DB) (users []User, err error) {
 
 	return users, nil
 }
-
-type Products struct {
-	Id int64
-	Name string
-	Price int64
-	Qty int64
-}
-
-func Json(db *sql.DB){
-	rows, err := db.Query(getAllProductsSQL)
-	if err != nil{
-		log.Println(err)
-	}
-	defer rows.Close()
-
-	stats := make([]*Products, 0)
-
-	for rows.Next(){
-		b:= new(Products)
-		err := rows.Scan(&b.Price,&b.Qty,&b.Name,&b.Id)
-		if err != nil {
-			log.Fatal(err)
-		}
-		stats = append(stats, b)
-	}
-	jsonData, err := json.Marshal(&stats)
-}
-
+//
+//type Products struct {
+//	Id int64
+//	Name string
+//	Price int64
+//	Qty int64
+//}
+//
+//func Json(db *sql.DB){
+//	rows, err := db.Query(getAllProductsSQL)
+//	if err != nil{
+//		log.Println(err)
+//	}
+//	defer rows.Close()
+//
+//	stats := make([]*Products, 0)
+//
+//	for rows.Next(){
+//		b:= new(Products)
+//		err := rows.Scan(&b.Price,&b.Qty,&b.Name,&b.Id)
+//		if err != nil {
+//			log.Fatal(err)
+//		}
+//		stats = append(stats, b)
+//	}
+//	jsonData, err := json.Marshal(&stats)
+//}
+//
