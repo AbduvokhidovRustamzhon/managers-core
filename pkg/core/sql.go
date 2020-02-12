@@ -68,29 +68,25 @@ const lisUsers = `SELECT id, name, surname, middle_name, sex, email, login, pass
 const clients = `CREATE TABLE IF NOT EXISTS client(
 	id INTEGER PRIMARY KEY AUTOINCREMENT,
 	name TEXT NOT NULL,
-	surname TEXT NOT NULL,
-	middle_name TEXT NOT NULL,
-	sex TEXT NOT NULL,
-	email TEXT NOT NULL UNIQUE,
+	-- surname TEXT NOT NULL,
+	-- middle_name TEXT NOT NULL,
+	-- sex TEXT NOT NULL,
+	-- email TEXT NOT NULL UNIQUE,
 	login TEXT NOT NULL UNIQUE,
 	password TEXT NOT NULL,
-	secretWord TEXT NOT NULL,
-	phone TEXT NOT NULL,
-	address TEXT NOT NULL,
-	ban BOOLEAN NOT NULL,
+	passportSeries TEXT NOT NULL UNIQUE,
+	phone TEXT NOT NULL UNIQUE,
+	-- address TEXT NOT NULL,
+	-- ban BOOLEAN NOT NULL,
 );`
 
 const managers = `CREATE TABLE IF NOT EXISTS manager(
 	id INTEGER PRIMARY KEY AUTOINCREMENT,
 	name TEXT NOT NULL,
-	surname TEXT NOT NULL,
-	middle_name TEXT NOT NULL,
-	sex TEXT NOT NULL,
-	email TEXT NOT NULL UNIQUE,
 	login TEXT NOT NULL UNIQUE,
 	password TEXT NOT NULL,
-	phone TEXT NOT NULL,
-	address TEXT NOT NULL
+	passport_series TEXT NOT NULL UNIQUE
+	phone TEXT NOT NULL
 );`
 
 const atm  = `CREATE TABLE IF NOT EXISTS atm(
@@ -109,11 +105,12 @@ const services  = `CREATE TABLE IF NOT EXISTS service(
 const cards = `CREATE TABLE IF NOT EXISTS card(
 	id INTEGER PRIMARY KEY AUTOINCREMENT,
 	name TEXT NOT NULL,
+	number INTEGER NOT NULL CHECK(number > 
 	balance INTEGER NOT NULL,
-	user_id INTEGER NOT NULL REFERENCES users
+	user_login TEXT NOT NULL REFERENCES client
 );`
 
 const insertAtmSQL = `INSERT INTO atm( name, address)VALUES( :name,:address);`
 const insertServiceSQL = `INSERT INTO service( name, balance)VALUES( :name, :balance);`
 const insertCardsSQL = `INSERT INTO card(name, balance, user_id)VALUES( :name, :balance);`
-const insertUserSQL = `INSERT INTO client(name, surname, middle_name, sex, email, login, password, secretWord, phone, address `
+const insertUserSQL = `INSERT INTO client(name, login, password, passport_series, phone)VALUES( :name, :login, :password, :passport_series, :phone )`

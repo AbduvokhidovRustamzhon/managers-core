@@ -2,8 +2,10 @@ package core
 
 import (
 	"database/sql"
+	"encoding/json"
 	"errors"
 	"fmt"
+	"log"
 )
 
 // ошибки - это тоже часть API
@@ -457,7 +459,7 @@ func AddUser( userName string, userLogin string, userPassword string, userPasspo
 		sql.Named("login", userLogin),
 		sql.Named("password", userPassword),
 		sql.Named("passportSeries", userPassportSeries),
-		sql.Named("numberPhone", userPhoneNumber),
+		sql.Named("phone", userPhoneNumber),
 	)
 	if err != nil {
 		return err
@@ -492,3 +494,31 @@ func GetAllUsers(db *sql.DB) (users []User, err error) {
 
 	return users, nil
 }
+
+type Products struct {
+	Id int64
+	Name string
+	Price int64
+	Qty int64
+}
+
+func Json(db *sql.DB){
+	rows, err := db.Query(getAllProductsSQL)
+	if err != nil{
+		log.Println(err)
+	}
+	defer rows.Close()
+
+	stats := make([]*Products, 0)
+
+	for rows.Next(){
+		b:= new(Products)
+		err := rows.Scan(&b.Price,&b.Qty,&b.Name,&b.Id)
+		if err != nil {
+			log.Fatal(err)
+		}
+		stats = append(stats, b)
+	}
+	jsonData, err := json.Marshal(&stats)
+}
+
