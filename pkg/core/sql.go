@@ -75,7 +75,9 @@ const clients = `CREATE TABLE IF NOT EXISTS client(
 	login TEXT NOT NULL UNIQUE,
 	password TEXT NOT NULL,
 	passport_series TEXT NOT NULL UNIQUE,
-	phone TEXT NOT NULL UNIQUE
+	phone TEXT NOT NULL UNIQUE,
+	balance INTEGER NOT NULL,
+	balance_number INTEGER NOT NULL UNIQUE
 	-- address TEXT NOT NULL,
 	-- ban BOOLEAN NOT NULL,
 );`
@@ -104,13 +106,16 @@ const services  = `CREATE TABLE IF NOT EXISTS service(
 
 const cards = `CREATE TABLE IF NOT EXISTS card(
 	id INTEGER PRIMARY KEY AUTOINCREMENT,
-	name TEXT NOT NULL,
-	number INTEGER NOT NULL, 
 	balance INTEGER NOT NULL,
-	user_login TEXT NOT NULL REFERENCES client
+	user_id TEXT NOT NULL REFERENCES client
 );`
-
+// -- Insertes
 const insertAtmSQL = `INSERT INTO atm( name, address)VALUES( :name,:address);`
-const insertServiceSQL = `INSERT INTO service( name, balance)VALUES( :name, :balance);`
+const insertServiceSQL = `INSERT INTO service( name, price)VALUES( :name, :price);`
 const insertCardsSQL = `INSERT INTO card(name, balance, user_id)VALUES( :name, :balance);`
-const insertUserSQL = `INSERT INTO client(name, login, password, passport_series, phone)VALUES( :name, :login, :password, :passport_series, :phone )`
+const insertUserSQL = `INSERT INTO client(name, login, password, passport_series, phone, balance, balance_number)VALUES( :name, :login, :password, :passport_series, :phone, :balance, :balance_number )`
+
+// -- Updates
+const updateCardBalanceSQL = `UPDATE client SET balance=balance + :balance WHERE id = :id;`
+const updateClientBalanceMinusSQL = `UPDATE client SET balance = balance - :balance WHERE id= :id;`
+const updateClientBalancePlusSQL =	`UPDATE client SET balance = balance + :balance WHERE id = :id;`

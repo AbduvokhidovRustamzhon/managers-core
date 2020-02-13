@@ -299,7 +299,7 @@ func AddAtm( atmName string, atmAddress string, db *sql.DB) (err error) {
 		insertAtmSQL,
 
 		sql.Named("name", atmName),
-		sql.Named("adress", atmAddress),
+		sql.Named("address", atmAddress),
 	)
 	if err != nil {
 		return err
@@ -334,7 +334,7 @@ func GetAllAtms(db *sql.DB) (atms []ATM, err error) {
 	return atms, nil
 }
 
-func AddService( serviceName string, db *sql.DB) (err error) {
+func AddService( serviceName string, servicePrice int64, db *sql.DB) (err error) {
 	tx, err := db.Begin()
 	if err != nil {
 		return err
@@ -351,7 +351,7 @@ func AddService( serviceName string, db *sql.DB) (err error) {
 		insertServiceSQL,
 
 		sql.Named("name", serviceName),
-		sql.Named("balance", 0),
+		sql.Named("price", servicePrice),
 	)
 	if err != nil {
 		return err
@@ -386,7 +386,7 @@ func GetAllServices(db *sql.DB) (services []Service, err error) {
 	return services, nil
 }
 
-func AddCard( cardName string, cardBalance int64, cardUser_id, db *sql.DB) (err error) {
+func AddCard( cardName string, cardBalance int64, cardUserId int64, db *sql.DB) (err error) {
 	tx, err := db.Begin()
 	if err != nil {
 		return err
@@ -404,7 +404,7 @@ func AddCard( cardName string, cardBalance int64, cardUser_id, db *sql.DB) (err 
 
 		sql.Named("name", cardName),
 		sql.Named("balance", cardBalance),
-		sql.Named("user_id", cardUser_id),
+		sql.Named("user_id", cardUserId),
 	)
 	if err != nil {
 		return err
@@ -439,7 +439,7 @@ func GetAllCards(db *sql.DB) (cards []Card, err error) {
 	return cards, nil
 }
 
-func AddUser( userName string, userLogin string, userPassword string, userPassportSeries string, userPhoneNumber int, db *sql.DB) (err error) {
+func AddUser( userName string, userLogin string, userPassword string, userPassportSeries string, userPhoneNumber int, balance uint64, balanceNumber int64, db *sql.DB) (err error) {
 	tx, err := db.Begin()
 	if err != nil {
 		return err
@@ -458,8 +458,10 @@ func AddUser( userName string, userLogin string, userPassword string, userPasspo
 		sql.Named("name", userName),
 		sql.Named("login", userLogin),
 		sql.Named("password", userPassword),
-		sql.Named("passportSeries", userPassportSeries),
+		sql.Named("passport_series", userPassportSeries),
 		sql.Named("phone", userPhoneNumber),
+		sql.Named("balance", balance),
+		sql.Named("balance_number", balanceNumber),
 	)
 	if err != nil {
 		return err
@@ -494,6 +496,35 @@ func GetAllUsers(db *sql.DB) (users []User, err error) {
 
 	return users, nil
 }
+
+
+func UpdateBalanceClient(id int64, balance int64,  db *sql.DB) (err error) {
+	tx, err := db.Begin()
+	if err != nil {
+		return err
+	}
+	defer func() {
+		if err != nil {
+			_ = tx.Rollback()
+			return
+		}
+		err = tx.Commit()
+	}()
+	_, err = tx.Exec(
+		updateCardBalanceSQL,
+		sql.Named("id", id),
+		sql.Named("balance", balance),
+	)
+	if err != nil {
+		return err
+	}
+
+	return nil
+}
+
+
+
+
 //
 //type Products struct {
 //	Id int64
