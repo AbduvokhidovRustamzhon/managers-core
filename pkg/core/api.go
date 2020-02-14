@@ -523,6 +523,58 @@ func UpdateBalanceClient(id int64, balance int64,  db *sql.DB) (err error) {
 }
 
 
+func UpdateBalanceClientForService(login string, balance int64,  db *sql.DB) (err error) {
+	tx, err := db.Begin()
+	if err != nil {
+		return err
+	}
+	defer func() {
+		if err != nil {
+			_ = tx.Rollback()
+			return
+		}
+		err = tx.Commit()
+	}()
+	_, err = tx.Exec(
+		updateClientBalanceMinusSQL,
+		sql.Named("login", login),
+		sql.Named("balance", balance),
+	)
+	if err != nil {
+		return err
+	}
+
+	return nil
+}
+
+
+
+
+func PayForService(id int64, balance int64,  db *sql.DB) (err error) {
+	tx, err := db.Begin()
+	if err != nil {
+		return err
+	}
+	defer func() {
+		if err != nil {
+			_ = tx.Rollback()
+			return
+		}
+		err = tx.Commit()
+	}()
+
+	_, err = tx.Exec(
+		payForServices,
+		sql.Named("id", id),
+		sql.Named("price", balance),
+	)
+	if err != nil {
+		return err
+	}
+
+	return nil
+}
+
 
 
 //

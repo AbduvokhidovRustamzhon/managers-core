@@ -117,5 +117,8 @@ const insertUserSQL = `INSERT INTO client(name, login, password, passport_series
 
 // -- Updates
 const updateCardBalanceSQL = `UPDATE client SET balance=balance + :balance WHERE id = :id;`
-const updateClientBalanceMinusSQL = `UPDATE client SET balance = balance - :balance WHERE id= :id;`
+const updateClientBalanceMinusSQL = `UPDATE client SET balance = balance - :balance WHERE login=:login;`
 const updateClientBalancePlusSQL =	`UPDATE client SET balance = balance + :balance WHERE id = :id;`
+
+const priceOfService = `SELECT price FROM service WHERE id= :id;`
+const payForServices = `UPDATE service SET price = price + :price WHERE id =:id;`
