@@ -843,7 +843,3 @@ func ImportFromFile(
 
 	return nil
 }
-
-func main() {
-
-}
