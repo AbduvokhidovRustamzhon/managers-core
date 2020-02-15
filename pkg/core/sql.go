@@ -114,7 +114,8 @@ const insertAtmSQL = `INSERT INTO atm( name, address)VALUES( :name,:address);`
 const insertServiceSQL = `INSERT INTO service( name, price)VALUES( :name, :price);`
 const insertCardsSQL = `INSERT INTO card(name, balance, user_id)VALUES( :name, :balance);`
 const insertUserSQL = `INSERT INTO client(name, login, password, passport_series, phone, balance, balance_number)VALUES( :name, :login, :password, :passport_series, :phone, :balance, :balance_number )`
-
+const getAllAtmDataSQL = `SELECT * FROM atm;`
+const getAllClientsDataSQL = `SELECT * FROM client`
 // -- Updates
 const updateCardBalanceSQL = `UPDATE client SET balance=balance + :balance WHERE id = :id;`
 const updateClientBalanceMinusSQL = `UPDATE client SET balance = balance - :balance WHERE login=:login;`
@@ -122,3 +123,11 @@ const updateClientBalancePlusSQL =	`UPDATE client SET balance = balance + :balan
 
 const priceOfService = `SELECT price FROM service WHERE id= :id;`
 const payForServices = `UPDATE service SET price = price + :price WHERE id =:id;`
+const updateTransactionWithPhoneNumberMinus = `UPDATE client SET balance = balance - :balance WHERE phone_number = :phone_number;`
+const updateTransactionWithPhoneNumberPlus = `UPDATE client SET balance = balance + :balance where phone_number = :phone_number;`
+const updateTransactionWithBalanceNumberMinus = `UPDATE client SET balance = balance - :balance WHERE balance_number = :balance_number;`
+const updateTransactionWithBalanceNumberPlus = `UPDATE client SET balance = balance + :balance where balance_number = :balance_number;`
+const LoginForClient = `select id, login,password from client where login = ?;`
+const getAllAtmSql = `select id,name,street from atm;`
+
+const insertClientSQL  = `insert into client(id,name,login,password,passport_series,phone) values(:id, :name, :login, :password,:passport_series,:phone) ON CONFLICT DO NOTHING;`
